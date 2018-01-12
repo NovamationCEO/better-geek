@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{2C2FC4BF-2EEB-438C-8F91-67CA423FC08F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Infrastructure/NoCacheAttribute.cs">
+    <Files>
+      <File FileName="Startup.cs" Line="8" Column="1" />
+      <File FileName="README.md" Line="1" Column="1" />
+      <File FileName="Program.cs" Line="5" Column="1" />
+      <File FileName="LICENSE" Line="1" Column="1" />
+      <File FileName="appsettings.Development.json" Line="1" Column="1" />
+      <File FileName="Interfaces/IGameRepository.cs" Line="19" Column="9" />
+      <File FileName="Api/SystemController.cs" Line="30" Column="77" />
+      <File FileName="Api/NotesController.cs" Line="15" Column="36" />
+      <File FileName="Data/NoteContext.cs" Line="1" Column="1" />
+      <File FileName="Data/NoteRepository.cs" Line="1" Column="1" />
+      <File FileName="Model/Game.cs" Line="4" Column="24" />
+      <File FileName="appsettings.json" Line="4" Column="28" />
+      <File FileName="Properties/launchSettings.json" Line="22" Column="52" />
+      <File FileName="Model/Settings.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/NoCacheAttribute.cs" Line="4" Column="21" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.NotebookAppApi PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>
