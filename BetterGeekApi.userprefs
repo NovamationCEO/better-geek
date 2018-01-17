@@ -1,21 +1,21 @@
 ﻿<Properties StartupConfiguration="{2C2FC4BF-2EEB-438C-8F91-67CA423FC08F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Data/GameRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument=".gitignore">
     <Files>
       <File FileName="appsettings.Development.json" Line="1" Column="1" />
-      <File FileName="appsettings.json" Line="4" Column="28" />
-      <File FileName="Data/GameRepository.cs" Line="88" Column="60" />
-      <File FileName="Startup.cs" Line="34" Column="35" />
-      <File FileName="Api/GamesController.cs" Line="34" Column="10" />
-      <File FileName="Model/Settings.cs" Line="3" Column="22" />
-      <File FileName="Interfaces/IGameRepository.cs" Line="21" Column="1" />
-      <File FileName="Model/Game.cs" Line="20" Column="44" />
+      <File FileName="appsettings.json" Line="1" Column="1" />
+      <File FileName="Data/GameRepository.cs" Line="39" Column="16" />
+      <File FileName="Startup.cs" Line="1" Column="1" />
+      <File FileName="Api/GamesController.cs" Line="52" Column="32" />
+      <File FileName="Model/Settings.cs" Line="1" Column="1" />
+      <File FileName="Interfaces/IGameRepository.cs" Line="15" Column="11" />
+      <File FileName="Model/Game.cs" Line="1" Column="1" />
+      <File FileName="Program.cs" Line="1" Column="1" />
+      <File FileName=".gitignore" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Volumes/RAID/Documents/BetterGeek/Data/GameRepository.cs" relfile="Data/GameRepository.cs" line="87" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.BetterGeekApi PreferredExecutionTarget="MonoDevelop.Default" />
