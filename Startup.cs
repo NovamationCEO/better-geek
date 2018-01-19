@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BetterGeekApi.Interfaces;
-using BetterGeekApi.Data;
 using BetterGeekApi.Model;
+using BetterGeekApi.Database;
+using BetterGeekApi.Managers;
 
 namespace BetterGeekApi
 {
@@ -37,7 +38,8 @@ namespace BetterGeekApi
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
             });
 
-            services.AddTransient<IGameRepository, GameRepository>();
+            services.AddTransient(typeof(IEntityManager<>), typeof(EntityManager<>));
+            services.AddTransient<IDatabaseFactory, DatabaseFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
