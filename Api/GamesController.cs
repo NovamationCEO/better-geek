@@ -13,21 +13,21 @@ namespace BetterGeekApi.Controllers
     [Route("api/[controller]")]
     public class GamesController : Controller
     {
-        private readonly IGameRepository _gameRepository;
+        private readonly IEntityManager<Game> _gameRepository;
 
-        public GamesController(IGameRepository gameRepository)
+        public GamesController(IEntityManager<Game> gameRepository)
         {
             _gameRepository = gameRepository;
         }
 
         [NoCache]
         [HttpGet]
-        public async Task<IEnumerable<Game>> Get()
+        public async Task<List<Game>> Get()
         {
             return await _gameRepository.Get();
         }
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public async Task<Game> GetById(string id)
         {
             return await _gameRepository.GetById(id);
@@ -51,5 +51,6 @@ namespace BetterGeekApi.Controllers
         {
             _gameRepository.Remove(id);
         }
+        */
     }
 }
