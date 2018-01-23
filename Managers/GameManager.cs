@@ -1,0 +1,27 @@
+﻿using System.Collections.Generic;
+using BetterGeekApi.Interfaces;
+using BetterGeekApi.Model;
+using BetterGeekApi.Database;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using System.Threading.Tasks;
+
+namespace BetterGeekApi.Managers
+{
+    public class GameManager : EntityManager<Game>, IGameManager
+    {
+        private readonly IEntityManager<Game> _entityManager;
+
+        public GameManager(IDatabaseFactory databaseFactory, IEntityManager<Game> entityManager) : base(databaseFactory)
+        {
+            _entityManager = entityManager;
+        }
+
+        public async Task<Game> GetByGameId(int id)
+        {
+            return await _entityManager.FindByProperty("GameId", id.ToString());
+
+        }
+    }
+}

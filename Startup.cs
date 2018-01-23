@@ -40,6 +40,8 @@ namespace BetterGeekApi
 
             services.AddTransient(typeof(IEntityManager<>), typeof(EntityManager<>));
             services.AddTransient<IDatabaseFactory, DatabaseFactory>();
+            services.AddTransient<IGameManager, GameManager>();
+            services.AddTransient<IUserManager, UserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

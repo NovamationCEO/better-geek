@@ -18,42 +18,68 @@ namespace BetterGeekApi.Managers
             _databaseFactory = databaseFactory;
         }
 
-        public Task<List<T>> Get()
+        public async Task<List<T>> Get()
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
-            return collection.OfType<T>().Find(_ => true).ToListAsync();
+            return await collection.OfType<T>().Find(_ => true).ToListAsync();
         }
 
-        public T GetById(string id)
+        public async Task<T> GetById(string id)
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
-            return collection.OfType<T>().AsQueryable<T>().Where(e => e.Id == new ObjectId(id)).FirstOrDefault();
+            return await collection.OfType<T>().AsQueryable<T>().Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
-        public bool Remove(string id)
+        public async Task<bool> Remove(string id)
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
-            DeleteResult actionResult = collection.DeleteOne(Builders<Entity>.Filter.Eq("Id", id));
+            DeleteResult actionResult = await collection.DeleteOneAsync(Builders<Entity>.Filter.Eq("Id", id));
 
             return actionResult.IsAcknowledged
                 && actionResult.DeletedCount > 0;
         }
 
-        public T Create(T entity)
+        public async Task<T> Create(T entity)
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
-            collection.InsertOne(entity);
+            await collection.InsertOneAsync(entity);
 
             return entity;
         }
 
-        public T Update(string id, T entity)
+        public async Task<List<T>> CreateMany(List<T> entities) {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            await collection.InsertManyAsync(entities);
+
+            return entities;
+        }
+
+
+        public async Task<T> Update(string id, T entity)
         {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            var filter = Builders<T>.Filter.Eq("Id", id);
+
+            await collection.OfType<T>().ReplaceOneAsync(filter, entity);
+
+            // should do a get by id or use above line.
             return entity;
+        }
+
+        public async Task<T> FindByProperty(string property, string value)
+        {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            var filterBuilder = Builders<T>.Filter;
+            var filter = filterBuilder.Eq(property, value);
+
+            return await collection.OfType<T>().Find(filter).FirstAsync();
         }
     }
 }

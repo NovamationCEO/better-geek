@@ -8,12 +8,16 @@ namespace BetterGeekApi.Interfaces
     {
         Task<List<T>> Get();
 
-        T GetById(string id);
+        Task<T> GetById(string id);
 
-        T Create(T entity);
+        Task<T> Create(T entity);
 
-        T Update(string id, T entity);
+        Task<List<T>> CreateMany(List<T> entities);
 
-        bool Remove(string id);
+        Task<T> Update(string id, T entity);
+
+        Task<bool> Remove(string id);
+
+        Task<T> FindByProperty(string property, string value);
     }
 }
