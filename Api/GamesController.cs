@@ -13,44 +13,57 @@ namespace BetterGeekApi.Controllers
     [Route("api/[controller]")]
     public class GamesController : Controller
     {
-        private readonly IEntityManager<Game> _gameRepository;
+        private readonly IGameManager _gameManager;
 
-        public GamesController(IEntityManager<Game> gameRepository)
+        public GamesController(IGameManager gameManager)
         {
-            _gameRepository = gameRepository;
+            _gameManager = gameManager;
         }
 
         [NoCache]
         [HttpGet]
-        public async Task<List<Game>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _gameRepository.Get();
+            var games = await _gameManager.Get();
+
+            return Ok(games);
         }
 
-        /*[HttpGet("{id}")]
-        public async Task<Game> GetById(string id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
         {
-            return await _gameRepository.GetById(id);
+            var game = await _gameManager.GetById(id);
+
+            if(game == null) {
+                return NotFound();
+            }
+
+            return Ok(game);
+
         }
 
         [HttpPost]
-        public void Create([FromBody]Game game)
+        public async Task<IActionResult> Create([FromBody]Game game)
         {
-            _gameRepository.Create(game);
+            var newGame = await _gameManager.Create(game);
+
+            return Ok(newGame);
         }
 
-        [HttpPut("{id}")]
+/*        [HttpPut("{id}")]
         public void Patch(string id, [FromBody]Game game)
         {
             game.Id = new ObjectId(id);
-            _gameRepository.Update(id, game);
+            _gameManager.Update(id, game);
+        }
+*/
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _gameManager.Remove(id);
+
+            return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(string id)
-        {
-            _gameRepository.Remove(id);
-        }
-        */
     }
 }
