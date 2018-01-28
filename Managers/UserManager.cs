@@ -9,16 +9,19 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 
 namespace BetterGeekApi.Managers
 {
     public class UserManager : EntityManager<User>, IUserManager
     {
         private readonly IGameManager _gameManager;
+        private readonly IOptions<Settings> _settings;
 
-        public UserManager(IDatabaseFactory databaseFactory, IGameManager gameManager) : base(databaseFactory)
+        public UserManager(IDatabaseFactory databaseFactory, IGameManager gameManager, IOptions<Settings> settings) : base(databaseFactory)
         {
             _gameManager = gameManager;
+            _settings = settings;
         }
 
         public async Task syncUser(string id)
@@ -28,7 +31,7 @@ namespace BetterGeekApi.Managers
             var bggUserName = user.BGGUserName;
 
             var client = new HttpClient();
-            var uri = new Uri("https://bgg-json.azurewebsites.net/collection/" + bggUserName);
+            var uri = new Uri(_settings.Value.BBGConnectionString + bggUserName);
 
             var response = await client.GetAsync(uri);
 
@@ -39,14 +42,16 @@ namespace BetterGeekApi.Managers
 
             var result = await response.Content.ReadAsStringAsync();
 
-            var games = JsonConvert.DeserializeObject<IEnumerable<Game>>(result);
+            var games = JsonConvert.DeserializeObject<List<Game>>(result);
+
 
             foreach (var game in games)
             {
                 var storedGame = await _gameManager.GetByGameId(game.GameId);
+
                 if (storedGame != null)
                 {
-                    await _gameManager.Update(storedGame.Id, game);
+                    await _gameManager.Patch(storedGame.Id, game.ToBsonDocument());
                 }
                 else
                 {

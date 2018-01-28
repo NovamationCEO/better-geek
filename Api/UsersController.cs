@@ -6,6 +6,8 @@ using BetterGeekApi.Infrastructure;
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
+using MongoDB.Bson.Serialization;
 
 namespace BetterGeekApi.Controllers
 {
@@ -59,13 +61,22 @@ namespace BetterGeekApi.Controllers
             return Ok(newuser);
         }
 
-/*        [HttpPut("{id}")]
-        public void Patch(string id, [FromBody]user user)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(string id, [FromBody]JObject json)
         {
-            user.Id = new ObjectId(id);
-            _userManager.Update(id, user);
+            BsonDocument bsonDocument = BsonSerializer.Deserialize<BsonDocument>(json.ToString());
+
+            try {
+                await _userManager.Patch(id, bsonDocument); 
+            } catch(Exception) {
+                return BadRequest();
+            }
+
+            var result = await _userManager.GetById(id);
+
+            return Ok(result);
         }
-*/
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

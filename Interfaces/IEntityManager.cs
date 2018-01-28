@@ -1,23 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BetterGeekApi.Model;
+using MongoDB.Bson;
 
 namespace BetterGeekApi.Interfaces
 {
     public interface IEntityManager<T> where T : Entity
     {
-        Task<List<T>> Get();
+        Task<IEnumerable<T>> Get();
 
         Task<T> GetById(string id);
 
+        Task<IEnumerable<T>> GetByIds(IEnumerable<string> ids);
+
         Task<T> Create(T entity);
 
-        Task<List<T>> CreateMany(List<T> entities);
-
-        Task<T> Update(string id, T entity);
+        Task<IEnumerable<T>> CreateMany(IEnumerable<T> entities);
 
         Task<bool> Remove(string id);
 
-        Task<T> FindByProperty(string property, string value);
+        Task<T> GetByProperty(string property, string value);
+
+        Task<IEnumerable<T>> GetByProperty(string propert, IEnumerable<string> values);
+
+        Task Patch(string id, BsonDocument document);
     }
 }

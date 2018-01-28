@@ -1,26 +1,21 @@
 ﻿<Properties StartupConfiguration="{2C2FC4BF-2EEB-438C-8F91-67CA423FC08F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Api/GamesController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Managers/UserManager.cs">
     <Files>
-      <File FileName="appsettings.Development.json" Line="1" Column="1" />
-      <File FileName="appsettings.json" Line="1" Column="1" />
-      <File FileName="Startup.cs" Line="45" Column="10" />
-      <File FileName="Api/GamesController.cs" Line="16" Column="52" />
-      <File FileName="Model/Settings.cs" Line="1" Column="1" />
-      <File FileName="Model/Game.cs" Line="9" Column="26" />
-      <File FileName="Program.cs" Line="1" Column="1" />
-      <File FileName=".gitignore" Line="1" Column="1" />
-      <File FileName="Model/Entity.cs" Line="9" Column="16" />
-      <File FileName="Interfaces/IEntityManager.cs" Line="11" Column="36" />
-      <File FileName="Managers/EntityManager.cs" Line="33" Column="10" />
-      <File FileName="Interfaces/IGameManager.cs" Line="9" Column="31" />
-      <File FileName="Managers/GameManager.cs" Line="23" Column="64" />
-      <File FileName="Api/UsersController.cs" Line="49" Column="13" />
-      <File FileName="Model/User.cs" Line="15" Column="9" />
-      <File FileName="Interfaces/IUserManager.cs" Line="9" Column="22" />
-      <File FileName="Managers/UserManager.cs" Line="46" Column="33" />
-      <File FileName="Properties/launchSettings.json" Line="1" Column="1" />
-      <File FileName="Database/IDatabaseFactory.cs" Line="1" Column="1" />
-      <File FileName="Database/DatabaseFactory.cs" Line="1" Column="1" />
+      <File FileName="Api/UsersController.cs" Line="13" Column="2" />
+      <File FileName="Api/GamesController.cs" Line="85" Column="14" />
+      <File FileName="Interfaces/IEntityManager.cs" Line="13" Column="9" />
+      <File FileName="Managers/EntityManager.cs" Line="96" Column="73" />
+      <File FileName="Interfaces/IGameManager.cs" Line="8" Column="14" />
+      <File FileName="Interfaces/IUserManager.cs" Line="10" Column="6" />
+      <File FileName="Managers/UserManager.cs" Line="34" Column="66" />
+      <File FileName="Managers/GameManager.cs" Line="12" Column="53" />
+      <File FileName="Startup.cs" Line="44" Column="24" />
+      <File FileName="Model/Entity.cs" Line="15" Column="2" />
+      <File FileName="Model/Game.cs" Line="15" Column="45" />
+      <File FileName="Model/User.cs" Line="15" Column="37" />
+      <File FileName="Database/DatabaseFactory.cs" Line="21" Column="68" />
+      <File FileName="appsettings.json" Line="22" Column="76" />
+      <File FileName="Model/Settings.cs" Line="10" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

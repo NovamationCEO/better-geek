@@ -20,8 +20,16 @@ namespace BetterGeekApi.Managers
 
         public async Task<Game> GetByGameId(int id)
         {
-            return await _entityManager.FindByProperty("GameId", id.ToString());
+            return await _entityManager.GetByProperty("gameId", id.ToString());
 
+        }
+
+
+        public async new Task Patch(string id, BsonDocument document)
+        {
+            document.Remove("gameId");
+
+            await _entityManager.Patch(id, document);
         }
     }
 }
