@@ -6,6 +6,9 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization;
+using System;
+using System.Collections;
 
 namespace BetterGeekApi.Managers
 {
@@ -18,7 +21,7 @@ namespace BetterGeekApi.Managers
             _databaseFactory = databaseFactory;
         }
 
-        public async Task<List<T>> Get()
+        public async Task<IEnumerable<T>> Get()
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
@@ -30,6 +33,14 @@ namespace BetterGeekApi.Managers
             var collection = _databaseFactory.GetCollection<Entity>();
 
             return await collection.OfType<T>().AsQueryable<T>().Where(e => e.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetByIds(IEnumerable<string> ids)
+        {
+            var collection = _databaseFactory.GetCollection<Entity>();
+            var filter = Builders<T>.Filter.In("Id", ids);
+
+            return await collection.OfType<T>().Find(filter).ToListAsync();
         }
 
         public async Task<bool> Remove(string id)
@@ -44,6 +55,9 @@ namespace BetterGeekApi.Managers
 
         public async Task<T> Create(T entity)
         {
+            entity.UpdatedDate = DateTime.Now;
+            entity.CreateDate = DateTime.Now;
+
             var collection = _databaseFactory.GetCollection<Entity>();
 
             await collection.InsertOneAsync(entity);
@@ -51,7 +65,12 @@ namespace BetterGeekApi.Managers
             return entity;
         }
 
-        public async Task<List<T>> CreateMany(List<T> entities) {
+        public async Task<IEnumerable<T>> CreateMany(IEnumerable<T> entities) {
+            foreach (var entity in entities) {
+                entity.UpdatedDate = DateTime.Now;
+                entity.CreateDate = DateTime.Now;
+            }
+
             var collection = _databaseFactory.GetCollection<Entity>();
 
             await collection.InsertManyAsync(entities);
@@ -59,27 +78,45 @@ namespace BetterGeekApi.Managers
             return entities;
         }
 
-
-        public async Task<T> Update(string id, T entity)
+        public async Task Patch(string id, BsonDocument document)
         {
-            var collection = _databaseFactory.GetCollection<Entity>();
+            document.Remove("updateDate");
+            document.Remove("createDate");
+            document.Remove("_id");
+            document.SetElement(new BsonElement("updatedDate", DateTime.Now));
 
-            var filter = Builders<T>.Filter.Eq("Id", id);
+            // validate payload;
+            try {
+                BsonSerializer.Deserialize<T>(document);
+            } catch(Exception e) {
+                throw e;
+            }
 
-            await collection.OfType<T>().ReplaceOneAsync(filter, entity);
 
-            // should do a get by id or use above line.
-            return entity;
+            var collection = _databaseFactory.GetCollection<BsonDocument>();
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            var update = new BsonDocumentUpdateDefinition<BsonDocument>(new BsonDocument("$set", document));
+
+            await collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task<T> FindByProperty(string property, string value)
+        public async Task<T> GetByProperty(string property, string value)
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
-            var filterBuilder = Builders<T>.Filter;
-            var filter = filterBuilder.Eq(property, value);
+            var filter = Builders<T>.Filter.Eq(property, value);
 
-            return await collection.OfType<T>().Find(filter).FirstAsync();
+            return await collection.OfType<T>().Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetByProperty(string property, IEnumerable<string> values)
+        {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            var filter = Builders<T>.Filter.In(property, values);
+
+            return await collection.OfType<T>().Find(filter).ToListAsync();
         }
     }
 }

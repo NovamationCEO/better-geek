@@ -6,6 +6,8 @@ using BetterGeekApi.Infrastructure;
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace BetterGeekApi.Controllers
 {
@@ -32,14 +34,30 @@ namespace BetterGeekApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var game = await _gameManager.GetById(id);
+            var newObject = new ObjectId();
+            var isObjectId = ObjectId.TryParse(id, out newObject);
 
-            if(game == null) {
-                return NotFound();
+            if (isObjectId) {
+                var game = await _gameManager.GetById(id);
+
+                if (game == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(game);
             }
 
-            return Ok(game);
+            if (id.Contains(","))
+            {
+                var ids = id.Split(",");
 
+                var games = await _gameManager.GetByIds(ids);
+
+                return Ok(games);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost]
@@ -50,17 +68,33 @@ namespace BetterGeekApi.Controllers
             return Ok(newGame);
         }
 
-/*        [HttpPut("{id}")]
-        public void Patch(string id, [FromBody]Game game)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(string id, [FromBody]JObject json)
         {
-            game.Id = new ObjectId(id);
-            _gameManager.Update(id, game);
+            BsonDocument bsonDocument = BsonSerializer.Deserialize<BsonDocument>(json.ToString());
+
+            try
+            {
+                await _gameManager.Patch(id, bsonDocument);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            var result = await _gameManager.GetById(id);
+
+            return Ok(result);
         }
-*/
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await _gameManager.Remove(id);
+            try {
+                await _gameManager.Remove(id);
+            } catch(Exception) {
+                return BadRequest();
+            }
 
             return Ok();
         }

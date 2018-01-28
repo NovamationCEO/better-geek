@@ -6,6 +6,7 @@ using BetterGeekApi.Interfaces;
 using BetterGeekApi.Model;
 using BetterGeekApi.Database;
 using BetterGeekApi.Managers;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace BetterGeekApi
 {
@@ -21,6 +22,10 @@ namespace BetterGeekApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var pack = new ConventionPack();
+            pack.Add(new CamelCaseElementNameConvention());
+            ConventionRegistry.Register("camel case", pack, t => true);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -36,6 +41,7 @@ namespace BetterGeekApi
             {
                 options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+                options.BBGConnectionString = Configuration.GetSection("ExternalConnection:BBGConnectionString").Value;
             });
 
             services.AddTransient(typeof(IEntityManager<>), typeof(EntityManager<>));
