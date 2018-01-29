@@ -21,6 +21,10 @@ namespace BetterGeekApi.Interfaces
 
         Task<T> GetByProperty(string property, string value);
 
+        Task<T> GetByProperty(string property, int value);
+
+        Task<IEnumerable<T>> GetByProperty(string propert, IEnumerable<int> values);
+
         Task<IEnumerable<T>> GetByProperty(string propert, IEnumerable<string> values);
 
         Task Patch(string id, BsonDocument document);

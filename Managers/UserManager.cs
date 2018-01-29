@@ -10,6 +10,7 @@ using System.Net.Http;
 using System;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace BetterGeekApi.Managers
 {
@@ -42,7 +43,7 @@ namespace BetterGeekApi.Managers
 
             var result = await response.Content.ReadAsStringAsync();
 
-            var games = JsonConvert.DeserializeObject<List<Game>>(result);
+            var games = JsonConvert.DeserializeObject<IEnumerable<Game>>(result);
 
 
             foreach (var game in games)
@@ -59,6 +60,16 @@ namespace BetterGeekApi.Managers
                 }
 
             }
+
+            IEnumerable<int> gameIds = games.Select(game => game.GameId);
+            IEnumerable<Game> gameCollection = await _gameManager.GetByGameIds(gameIds);
+            IEnumerable<string> gameObjectIds = gameCollection.Select(game => game.Id);
+
+            BsonArray dataFields = new BsonArray(gameObjectIds);
+
+            BsonDocument newUser = new BsonDocument { { "gameCollection", dataFields } };
+
+            await this.Patch(id, newUser);
         }
 
     }

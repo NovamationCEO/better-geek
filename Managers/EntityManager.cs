@@ -110,7 +110,25 @@ namespace BetterGeekApi.Managers
             return await collection.OfType<T>().Find(filter).FirstOrDefaultAsync();
         }
 
+        public async Task<T> GetByProperty(string property, int value)
+        {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            var filter = Builders<T>.Filter.Eq(property, value);
+
+            return await collection.OfType<T>().Find(filter).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetByProperty(string property, IEnumerable<string> values)
+        {
+            var collection = _databaseFactory.GetCollection<Entity>();
+
+            var filter = Builders<T>.Filter.In(property, values);
+
+            return await collection.OfType<T>().Find(filter).ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetByProperty(string property, IEnumerable<int> values)
         {
             var collection = _databaseFactory.GetCollection<Entity>();
 
